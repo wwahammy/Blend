@@ -16,7 +16,7 @@ metadata {
 files[dlls] {
     root: "..\out";
 	include: {
-        "**\*dll"
+        "**\*.dll"
     };
 	
 	trim-path: minimal;
