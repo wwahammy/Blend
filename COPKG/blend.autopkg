@@ -1,0 +1,41 @@
+package {
+	name: "Blend SDK";
+    display-name: "Blend SDK";
+    location: "http://coapp.org/repository/${OutputFilename}";
+    feed: "http://coapp.org/repository/packages.atom.xml";
+    publisher: "CoApp Project";
+}
+
+metadata {
+   
+    
+    summary: "Common Locations Service";
+	author-version : "4";
+}
+
+files[dlls] {
+    root: "..\out";
+	include: {
+        "**\*dll"
+    };
+	
+	trim-path: minimal;
+}
+
+assemblies {
+    include : {
+      dlls
+    };
+	
+}
+
+developer-library[dlls] {
+	reference-assemblies:
+	{
+	dlls
+	};
+    
+}
+
+
+

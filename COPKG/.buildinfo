@@ -1,0 +1,112 @@
+#product-info {
+    product-name: "GalaSoft.MvvmLight";
+    version: "V4 Beta 1";
+    original-source-location: "git@github.com:ericschultz/GalaSoft.MvvmLight.git";
+    original-source-website: "https://github.com/ericschultz/GalaSoft.MvvmLight";
+    license: "MIT";
+    packager: "Eric Schultz <wwahammy@gmail.com>";
+}
+
+release { 
+    // builds the binaries in "Release" mode but does not sign them.
+    set : cfg = "Release";
+    uses : {
+        anycpu 
+    };
+    
+    build-command: @"echo build done.";
+}
+
+test
+{
+
+	uses: release;
+	
+}
+debug {
+    // builds binaries in debug mode
+    default: false;
+    set : cfg = "Debug";
+    uses : {
+        anycpu 
+    };
+    
+    build-command: @"echo build done.";
+}
+
+package {
+    uses: sign;
+    build-command: @"autopackage.exe COPKG\*.autopkg";
+}
+
+sign { 
+    // builds all the binaries in "Release" mode and digitally signs and 
+    // strong-names the binaries.
+    // 
+    default: false;
+    set : cfg = "Release";
+    uses : {
+		release,
+        sign-binaries
+    };
+        
+    
+    build-command: @"echo built signed binaries. done.";
+}
+
+
+
+sign-binaries {
+    set : release_dir = @"main\Microsoft.Practices.ServiceLocation\bin\Release";
+    
+    default: false;
+    
+    uses: {
+        anycpu
+    };
+    
+    targets: {
+    };
+    
+    build-command: @"
+        REM sign files in release directory
+		xcopy /Q /D /Y  /I /S ""Libraries"" ""out""
+        simplesigner --sign ""out\**.dll""
+        
+        
+        REM Everything went ok!
+        exit /b 0
+        
+        REM Something not ok :(
+        :failed
+        echo ERROR: Failure in script. aborting.
+        exit /b 1
+    ";
+}
+
+
+anycpu {
+    default: no;
+    platform : x86;
+    compiler: vc10;
+    
+    uses: clean;
+    targets: { 
+       
+    };
+
+    build-command: @"
+        echo build done
+    ";
+  
+}
+
+clean {
+    default: no;
+    
+    clean-command: @"
+        rmdir /s /q out > nul 2>&1
+        for /d %%v in (*) do if exist %%v\obj rmdir /s /q %%v\obj        
+        for /d %%v in (*) do if exist %%v\bin rmdir /s /q %%v\bin
+    ";
+}
