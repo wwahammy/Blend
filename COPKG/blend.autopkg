@@ -1,16 +1,22 @@
+// autopackage file for coapp.devtools
+@import "outercurve.inc";
+
 package {
-	name: "Blend SDK";
+	name: "Microsoft.Blend.SDK";
     display-name: "Blend SDK";
     location: "http://coapp.org/repository/${OutputFilename}";
     feed: "http://coapp.org/repository/packages.atom.xml";
     publisher: "CoApp Project";
+    // version : "4.0.0.0";
+    //architecture: "any";
 }
 
 metadata {
-   
+    summary: "Blend SDK";
+    description:@"Microsoft Expression Blend 4 includes new built-in behaviors, which are reusable pieces of packaged code that can be dragged onto any object, and then fine-tuned by changing their properties. 
     
-    summary: "Common Locations Service";
-	author-version : "4";
+Behaviors allow you to add interactivity to your applications without having to write any code. The Behavior API consists of three core classes: Trigger, Action, and Behavior.";
+	author-version : "v4";
 }
 
 files[dlls] {
@@ -20,6 +26,17 @@ files[dlls] {
     };
 	
 	trim-path: minimal;
+}
+
+files[reference] {
+    root: "..\out";
+    include: {
+        "*.xml",
+        "*.dll",
+        "Design\*.xml",
+        "Design\*.dll",
+    };
+    trim-path: minimal;
 }
 
 assemblies {
@@ -32,7 +49,7 @@ assemblies {
 developer-library[dlls] {
 	reference-assemblies:
 	{
-	dlls
+	    reference
 	};
     
 }
