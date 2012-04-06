@@ -70,17 +70,9 @@ sign-binaries {
     
     build-command: @"
         REM sign files in release directory
-		xcopy /Q /D /Y  /I /S ""Libraries"" ""out""
-        simplesigner --sign ""out\**.dll""
-        
-        
-        REM Everything went ok!
-        exit /b 0
-        
-        REM Something not ok :(
-        :failed
-        echo ERROR: Failure in script. aborting.
-        exit /b 1
+        rmdir /s /q out
+        xcopy /Q /D /Y  /I /S ""Libraries"" ""out""
+        simplesigner --just-sign ""out\**.dll""
     ";
 }
 
